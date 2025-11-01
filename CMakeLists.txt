@@ -18,9 +18,11 @@ file(GLOB GCGEN_SRC_FILES
 
 add_executable(${PROJECT_NAME}
         ${GCGEN_SRC_FILES}
-        include/GlobalMinimumShekel.h
-        src/GlobalMinimumShekel.cpp
+        include/DE_finding_global_min.h
+        src/DE_finding_global_min.cpp
         example/main.cpp
+        include/measuring_time.h
+        src/measuring_time.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
