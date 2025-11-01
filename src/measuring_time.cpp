@@ -5,7 +5,7 @@
 #include "DE_finding_global_min.h"
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
     if (vec.empty()) {
         os << "{}";
     } else if (vec.size() == 1) {
@@ -54,28 +54,27 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     return result;
 }
 
-void writeResultsToCSV(const std::vector<std::vector<TResult>> &all_results, const std::string &filename) {
+void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, const std::string &filename,
+                       int lunch_count) {
     std::ofstream file(filename);
 
     // Header CSV
-    file << "function_id,function_name,test_run,predicted_output,correct_output,"
+    file << "function_id,function_name,predicted_output,correct_output,"
          << "output_deviation,predicted_input,correct_input,execution_time_ms,success\n";
 
-    for (const auto &all_result: all_results) {
-        for (size_t test_run = 0; test_run < all_result.size(); ++test_run) {
-            const auto &result = all_result[test_run];
+    for (const auto &result_pair: all_results) {
+        TResult tResult = result_pair.first;
+        int count_success = result_pair.second;
+        file << tResult.function_index << ","
+             << tResult.function_name << ","
+             << tResult.predicted_output << ","
+             << tResult.correct_output << ","
+             << tResult.output_deviation << ",\""
+             << tResult.predicted_input << "\",\""
+             << tResult.correct_input << "\","
+             << tResult.execution_time_ms << ","
+             << count_success << "/" << lunch_count << "\n";
 
-            file << result.function_index << ","
-                 << result.function_name << ","
-                 << (test_run + 1) << ","
-                 << result.predicted_output << ","
-                 << result.correct_output << ","
-                 << result.output_deviation << ",\""
-                 << result.predicted_input << "\",\""
-                 << result.correct_input << "\","
-                 << result.execution_time_ms << ","
-                 << (result.success ? "true" : "false") << "\n";
-        }
     }
 
     file.close();

@@ -19,9 +19,11 @@ struct TResult {
     bool success;
 };
 
-TResult runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size);
+TResult
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size);
 
-void writeResultsToCSV(const std::vector<std::vector<TResult>> &all_results, const std::string &filename);
+void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, const std::string &filename,
+                       int lunch_count);
 
 bool compare(double first, double second, double eps);
 
