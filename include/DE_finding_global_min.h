@@ -8,7 +8,7 @@
 #ifndef UNTITLED5_GLOBALMINIMUMSHEKEL_H
 #define UNTITLED5_GLOBALMINIMUMSHEKEL_H
 
-std::pair<double, double>
+std::pair<double, std::vector<double>>
 findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objFunc, size_t input_size);
 
 #endif //UNTITLED5_GLOBALMINIMUMSHEKEL_H

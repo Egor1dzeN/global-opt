@@ -13,8 +13,8 @@ struct TResult {
     double predicted_output;
     double correct_output;
     double output_deviation;
-    double predicted_input;
-    double correct_input;
+    std::vector<double> predicted_input;
+    std::vector<double> correct_input;
     double execution_time_ms;
     bool success;
 };

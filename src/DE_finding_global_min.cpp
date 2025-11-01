@@ -16,7 +16,7 @@ std::mt19937 gen(std::random_device{}());
 std::uniform_real_distribution<double> dis_real(0.0, 1.0);
 std::uniform_int_distribution<int> dis_index(0, NP - 1);
 
-std::pair<double, double>
+std::pair<double, std::vector<double>>
 findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objFunc, size_t input_size) {
     vector<vector<double>> population(NP, std::vector<double>(input_size));
     vector<double> fitness(NP);
@@ -27,7 +27,6 @@ findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objF
             double y_val = min_y + (max_y - min_y) * dis_real(gen);
             population[i][j] = y_val;
         }
-//        population[i] = {y_val1, y_val2};
         fitness[i] = objFunc(population[i]);
     }
 
@@ -58,7 +57,6 @@ findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objF
                 new_population[i] = trial_vec;
                 new_fitness[i] = trial_fitness;
             }
-            // else - уже скопировано в new_population[i] = population[i]
         }
 
         population = new_population;
@@ -73,6 +71,6 @@ findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objF
         }
     }
 
-    // Возвращаем обе координаты и значение функции
-    return std::make_pair(fitness[best_index], population[best_index][0]);
+    // Return {func(input)=min, input}
+    return std::make_pair(fitness[best_index], population[best_index]);
 }

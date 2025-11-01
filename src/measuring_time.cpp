@@ -4,6 +4,25 @@
 #include "measuring_time.h"
 #include "DE_finding_global_min.h"
 
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+    if (vec.empty()) {
+        os << "{}";
+    } else if (vec.size() == 1) {
+        os << vec[0];
+    } else {
+        os << "{";
+        for (size_t i = 0; i < vec.size(); ++i) {
+            os << vec[i];
+            if (i != vec.size() - 1) {
+                os << ", ";
+            }
+        }
+        os << "}";
+    }
+    return os;
+}
+
 TResult
 runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size) {
     auto start_time = std::chrono::high_resolution_clock::now();
@@ -16,10 +35,10 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
 
     double pred_output = res.first;
-    double pred_input = res.second;
+    std::vector<double> pred_input = res.second;
 
     double correct_output = iOptProblem.GetOptimumValue();
-    double correct_input = iOptProblem.GetOptimumPoint()[0];
+    std::vector<double> correct_input = iOptProblem.GetOptimumPoint();
 
     TResult result;
     result.function_index = function_index;
@@ -29,7 +48,7 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     result.output_deviation = std::abs(pred_output - correct_output);
     result.predicted_input = pred_input;
     result.correct_input = correct_input;
-    result.execution_time_ms = duration.count() / 1000.0; // преобразуем в миллисекунды
+    result.execution_time_ms = double(duration.count()) / 1000.0; // преобразуем в миллисекунды
     result.success = compare(pred_output, correct_output, 0.1);
 
     return result;
@@ -51,9 +70,9 @@ void writeResultsToCSV(const std::vector<std::vector<TResult>> &all_results, con
                  << (test_run + 1) << ","
                  << result.predicted_output << ","
                  << result.correct_output << ","
-                 << result.output_deviation << ","
-                 << result.predicted_input << ","
-                 << result.correct_input << ","
+                 << result.output_deviation << ",\""
+                 << result.predicted_input << "\",\""
+                 << result.correct_input << "\","
                  << result.execution_time_ms << ","
                  << (result.success ? "true" : "false") << "\n";
         }
