@@ -7,8 +7,8 @@
 const int NP = 40;
 const double F = 0.8;
 const double CR = 0.9;
-const double min_y = -1.0;
-const double max_y = 1.0;
+const double min_y = -10.0;
+const double max_y = 10.0;
 const int max_generations = 200;
 
 
