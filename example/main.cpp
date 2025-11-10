@@ -8,8 +8,9 @@
 #include <Grishagin/GrishaginConstrainedProblem.hpp>
 #include <Grishagin/grishagin_function.hpp>
 #include <GKLS/GKLSProblem.hpp>
-#include <bits/stdc++.h>
 #include "measuring_time.h"
+#include <stdexcept>
+#include <iostream>
 #include <cxxabi.h>
 
 const int NUMBER_LOOP = 10;
@@ -99,7 +100,7 @@ measureTime(int startFunctionID = 1, int endFunctionID = 101, int run_count = 10
 }
 
 int main() {
-    using T = THillProblem;
+    using T = TGrishaginProblem;
     measureTime<T>(1, 101, NUMBER_LOOP, 2);
     return 0;
 }
