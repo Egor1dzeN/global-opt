@@ -1,8 +1,11 @@
 //
 // Created by egorm on 28-Oct-25.
 //
+#include <chrono>
 #include "measuring_time.h"
 #include "DE_finding_global_min.h"
+#include "iostream"
+#include "fstream"
 
 template<typename T>
 std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {

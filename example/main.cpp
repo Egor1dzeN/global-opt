@@ -8,24 +8,46 @@
 #include <Grishagin/GrishaginConstrainedProblem.hpp>
 #include <Grishagin/grishagin_function.hpp>
 #include <GKLS/GKLSProblem.hpp>
-#include <bits/stdc++.h>
 #include "measuring_time.h"
-#include <cxxabi.h>
+#include <stdexcept>
+#include <iostream>
+
+#ifdef _MSC_VER
+// Для MSVC
+#include <typeinfo>
+#else
+// Для GCC/Clang
+    #include <cxxabi.h>
+#endif
 
 const int NUMBER_LOOP = 10;
 
-// Convert from mangled to demangled name of class
-std::string demangle(const char *mangled_name) {
+std::string demangle(const char* mangled_name) {
+#ifdef _MSC_VER
+    // For MSVC toolchain
+    std::string result = mangled_name;
+
+    const std::string prefixes[] = {"class ", "struct ", "enum "};
+    for (const auto& prefix : prefixes) {
+        if (result.find(prefix) == 0) {
+            result.erase(0, prefix.length());
+            break;
+        }
+    }
+
+    return result;
+#else
+    // For MinGW toolchain
     int status = 0;
-    char *demangled = abi::__cxa_demangle(mangled_name, nullptr, nullptr, &status);
+    char* demangled = abi::__cxa_demangle(mangled_name, nullptr, nullptr, &status);
 
     if (status == 0) {
         std::string result(demangled);
         std::free(demangled);
         return result;
     }
-
     return mangled_name;
+#endif
 }
 
 std::pair<TResult, int> avgTResult(const std::vector<TResult> &input) {
@@ -99,7 +121,7 @@ measureTime(int startFunctionID = 1, int endFunctionID = 101, int run_count = 10
 }
 
 int main() {
-    using T = THillProblem;
+    using T = TGrishaginProblem;
     measureTime<T>(1, 101, NUMBER_LOOP, 2);
     return 0;
 }

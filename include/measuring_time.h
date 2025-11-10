@@ -1,7 +1,6 @@
 //
 // Created by egorm on 28-Oct-25.
 //
-#include <bits/stdc++.h>
 #include "IOptProblem.hpp"
 
 #ifndef UNTITLED5_MEASURING_TIME_H
