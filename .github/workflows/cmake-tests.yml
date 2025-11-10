@@ -1,0 +1,33 @@
+name: Build C++ Project
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ make
+
+      - name: Configure project
+        run: cmake -B build -S .
+
+      - name: Build project
+        run: cmake --build build
+
+      - name: Run tests
+        run: |
+          cd build
+          ./find_global_opt_test
