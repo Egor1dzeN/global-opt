@@ -27,12 +27,12 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
 }
 
 TResult
-runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size) {
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size, int count_generation) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     auto res = findGlobalMinimum([&](const std::vector<double> &x) -> double {
         return iOptProblem.ComputeFunction(x);
-    }, input_size);
+    }, input_size, -1.0, 1.0, count_generation);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
@@ -52,6 +52,7 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     result.predicted_input = pred_input;
     result.correct_input = correct_input;
     result.execution_time_ms = double(duration.count()) / 1000.0; // преобразуем в миллисекунды
+    result.count_generation = count_generation;
     result.success = compare(pred_output, correct_output, 0.1);
 
     return result;
@@ -63,7 +64,7 @@ void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, 
 
     // Header CSV
     file << "function_id,function_name,predicted_output,correct_output,"
-         << "output_deviation,predicted_input,correct_input,execution_time_ms,success\n";
+         << "output_deviation,predicted_input,correct_input,execution_time_ms,count_generation,success\n";
 
     for (const auto &result_pair: all_results) {
         TResult tResult = result_pair.first;
@@ -76,6 +77,7 @@ void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, 
              << tResult.predicted_input << "\",\""
              << tResult.correct_input << "\","
              << tResult.execution_time_ms << ","
+             << tResult.count_generation << ","
              << count_success << "/" << lunch_count << "\n";
 
     }
