@@ -2,22 +2,21 @@
 // Created by egorm on 20-Oct-25.
 //
 #include <DE_finding_global_min.h>
+#include <random>
 
-
+const int RANDOM_SEED = 42;
 const int NP = 40;
 const double F = 0.8;
 const double CR = 0.9;
-const double min_y = -10.0;
-const double max_y = 10.0;
-const int max_generations = 200;
 
 
-std::mt19937 gen(std::random_device{}());
+std::mt19937 gen(RANDOM_SEED);
 std::uniform_real_distribution<double> dis_real(0.0, 1.0);
 std::uniform_int_distribution<int> dis_index(0, NP - 1);
 
 std::pair<double, std::vector<double>>
-findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objFunc, size_t input_size) {
+findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objFunc, size_t input_size, double min_y,
+                  double max_y, int count_generation) {
     vector<vector<double>> population(NP, std::vector<double>(input_size));
     vector<double> fitness(NP);
 
@@ -30,7 +29,7 @@ findGlobalMinimum(const std::function<double(const std::vector<double> &)> &objF
         fitness[i] = objFunc(population[i]);
     }
 
-    for (int g = 0; g < max_generations; g++) {
+    for (int g = 0; g < count_generation; g++) {
         vector<vector<double>> new_population = population;
         vector<double> new_fitness = fitness;
 
