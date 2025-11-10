@@ -2,9 +2,9 @@ name: Build C++ Project
 
 on:
   push:
-    branches: ['**']
+    branches: [ '**' ]
   pull_request:
-    branches: ['**']
+    branches: [ '**' ]
 
 jobs:
   build:
@@ -26,3 +26,8 @@ jobs:
 
       - name: Build project
         run: cmake --build build
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
