@@ -1,3 +1,0 @@
-[submodule "3rd_party/GCGen"]
-	path = 3rd_party/GCGen
-	url = https://github.com/OptimLLab/GCGen.git
