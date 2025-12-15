@@ -5,7 +5,6 @@
 #include "GKLS/GKLSProblem.hpp"
 #include "DE_finding_global_min.h"
 #include "measuring_time.h"
-#include "Grishagin/grishagin_function.hpp"
 
 double calculateTGKLS(TGKLSProblem &tgklsProblem) {
     auto [optimal_value, _] = findGlobalMinimum([&](const std::vector<double> &x) -> double {
@@ -14,7 +13,7 @@ double calculateTGKLS(TGKLSProblem &tgklsProblem) {
     return optimal_value;
 }
 
-TEST(GKLS_Test, BasicTest_2dim) {
+TEST(GKLS_Test, BasicTest_2dim_1) {
     int functionId = 1;
     int input_size = 2;
     TGKLSProblem tgklsProblem(functionId, input_size);

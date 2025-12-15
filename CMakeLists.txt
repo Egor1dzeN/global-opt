@@ -43,10 +43,7 @@ target_link_libraries(
 include(GoogleTest)
 gtest_discover_tests(${EXECUTABLE_NAME_TEST})
 
-# Добавляем сабмодуль, но отключаем его исполняемый файл
 add_subdirectory(3rd_party/GCGen)
-
-# Вместо использования библиотеки, добавляем исходники напрямую
 
 add_executable(${PROJECT_NAME}
         ${GCGEN_SRC_FILES}
@@ -56,6 +53,13 @@ add_executable(${PROJECT_NAME}
         include/measuring_time.h
         src/measuring_time.cpp
 )
+#add_library(${PROJECT_NAME}_lib
+#        ${GCGEN_SRC_FILES}
+#        include/DE_finding_global_min.h
+#        src/DE_finding_global_min.cpp
+#        include/measuring_time.h
+#        src/measuring_time.cpp
+#)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/GCGen/src
@@ -67,3 +71,8 @@ target_include_directories(${EXECUTABLE_NAME_TEST} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/GCGen/sample_src
         include
 )
+#target_include_directories(${PROJECT_NAME}_lib PRIVATE
+#        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/GCGen/src
+#        ${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/GCGen/sample_src
+#        include
+#)

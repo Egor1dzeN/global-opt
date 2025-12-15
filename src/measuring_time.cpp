@@ -27,7 +27,8 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
 }
 
 TResult
-runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size, int count_generation) {
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size,
+              int count_generation) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     auto res = findGlobalMinimum([&](const std::vector<double> &x) -> double {

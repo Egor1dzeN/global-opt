@@ -22,26 +22,41 @@ TEST(Shekel_Test, BasicTest_1) {
 }
 
 TEST(Shekel_Test, BasicTest_2) {
-    int functionId = 3;
+    int functionId = 2;
     TShekelProblem problem(functionId);
     double res = calculateTShekel(problem);
     EXPECT_NEAR(res, problem.GetOptimumValue(), 0.1);
 }
 
 TEST(Shekel_Test, BasicTest_3) {
-    int functionId = 5;
+    int functionId = 3;
     TShekelProblem problem(functionId);
     double res = calculateTShekel(problem);
     EXPECT_NEAR(res, problem.GetOptimumValue(), 0.1);
 }
 
 TEST(Shekel_Test, BasicTest_4) {
+    int functionId = 4;
+    TShekelProblem problem(functionId);
+    double res = calculateTShekel(problem);
+    EXPECT_NEAR(res, problem.GetOptimumValue(), 0.1);
+}
+
+TEST(Shekel_Test, BasicTest_5) {
+    int functionId = 5;
+    TShekelProblem problem(functionId);
+    double res = calculateTShekel(problem);
+    EXPECT_NEAR(res, problem.GetOptimumValue(), 0.1);
+}
+
+TEST(Shekel_Test, BasicTest_100) {
     int functionId = 100;
     TShekelProblem problem(functionId);
     double res = calculateTShekel(problem);
     EXPECT_NEAR(res, problem.GetOptimumValue(), 0.1);
 }
-TEST(Shekel_Test, BasicTest_5) {
+
+TEST(Shekel_Test, BasicTest_max) {
     int functionId = NUM_SHEKEL_PROBLEMS - 1;
     TShekelProblem problem(functionId);
     double res = calculateTShekel(problem);

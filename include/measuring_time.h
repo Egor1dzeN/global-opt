@@ -1,10 +1,9 @@
 //
 // Created by egorm on 28-Oct-25.
 //
-#include "IOptProblem.hpp"
+#pragma once
 
-#ifndef UNTITLED5_MEASURING_TIME_H
-#define UNTITLED5_MEASURING_TIME_H
+#include "IOptProblem.hpp"
 
 struct TResult {
     int function_index;
@@ -20,11 +19,11 @@ struct TResult {
 };
 
 TResult
-runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size, int count_generation = 200);
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size,
+              int count_generation = 200);
 
 void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, const std::string &filename,
                        int lunch_count);
 
 bool compare(double first, double second, double eps);
 
-#endif //UNTITLED5_MEASURING_TIME_H

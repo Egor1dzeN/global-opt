@@ -5,7 +5,6 @@
 #include "Grishagin/grishagin_function.hpp"
 #include "DE_finding_global_min.h"
 #include "measuring_time.h"
-#include "Grishagin/grishagin_function.hpp"
 
 double calculateTGrishagin(TGrishaginProblem &grishaginProblem) {
     auto [optimal_value, _] = findGlobalMinimum([&](const std::vector<double> &x) -> double {
@@ -16,27 +15,27 @@ double calculateTGrishagin(TGrishaginProblem &grishaginProblem) {
 
 TEST(Grishagin_Test, BasicTest_1) {
     int functionId = 1;
-    TGrishaginProblem tgklsProblem(functionId);
-    double res = calculateTGrishagin(tgklsProblem);
-    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
+    TGrishaginProblem tGrishaginProblem(functionId);
+    double res = calculateTGrishagin(tGrishaginProblem);
+    EXPECT_NEAR(res, tGrishaginProblem.GetOptimumValue(), 0.1);
 }
 
 TEST(Grishagin_Test, BasicTest_2) {
     int functionId = 3;
-    TGrishaginProblem tgklsProblem(functionId);
-    double res = calculateTGrishagin(tgklsProblem);
-    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
+    TGrishaginProblem tGrishaginProblem(functionId);
+    double res = calculateTGrishagin(tGrishaginProblem);
+    EXPECT_NEAR(res, tGrishaginProblem.GetOptimumValue(), 0.1);
 }
 
 TEST(Grishagin_Test, BasicTest_3) {
     int functionId = 5;
-    TGrishaginProblem tgklsProblem(functionId);
-    double res = calculateTGrishagin(tgklsProblem);
-    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
+    TGrishaginProblem tGrishaginProblem(functionId);
+    double res = calculateTGrishagin(tGrishaginProblem);
+    EXPECT_NEAR(res, tGrishaginProblem.GetOptimumValue(), 0.1);
 }
 TEST(Grishagin_Test, BasicTest_4) {
     int functionId = 100;
-    TGrishaginProblem tgklsProblem(functionId);
-    double res = calculateTGrishagin(tgklsProblem);
-    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
+    TGrishaginProblem tGrishaginProblem(functionId);
+    double res = calculateTGrishagin(tGrishaginProblem);
+    EXPECT_NEAR(res, tGrishaginProblem.GetOptimumValue(), 0.1);
 }
