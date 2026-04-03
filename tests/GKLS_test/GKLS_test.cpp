@@ -15,52 +15,28 @@ double calculateTGKLS(TGKLSProblem &tgklsProblem) {
     return res.fun;
 }
 
-TEST(GKLS_Test, BasicTest_2dim_1
-) {
-int functionId = 1;
-int input_size = 2;
-TGKLSProblem tgklsProblem(functionId, input_size);
-double res = calculateTGKLS(tgklsProblem);
-EXPECT_NEAR(res, tgklsProblem
-.
-
-GetOptimumValue(),
-
-0.1);
+TEST(GKLS_Test, BasicTest_2dim_1) {
+    int functionId = 1;
+    int input_size = 2;
+    TGKLSProblem tgklsProblem(functionId, input_size);
+    double res = calculateTGKLS(tgklsProblem);
+    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
 
-TEST(GKLS_Test, BasicTest_3dim
-) {
-int functionId = 1;
-int input_size = 3;
-TGKLSProblem tgklsProblem(functionId, input_size);
-double res = calculateTGKLS(tgklsProblem);
-EXPECT_NEAR(res, tgklsProblem
-.
-
-GetOptimumValue(),
-
-0.1);
+TEST(GKLS_Test, BasicTest_3dim) {
+    int functionId = 1;
+    int input_size = 3;
+    TGKLSProblem tgklsProblem(functionId, input_size);
+    double res = calculateTGKLS(tgklsProblem);
+    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
 
-TEST(GKLS_Test, BasicTest_5dim
-) {
-int functionId = 1;
-int input_size = 5;
-TGKLSProblem tgklsProblem(functionId, input_size);
-for (
-auto el
-: tgklsProblem.
-
-GetMaxPoint()
-
-)
-std::cout << el << "\n";
-double res = calculateTGKLS(tgklsProblem);
-EXPECT_NEAR(res, tgklsProblem
-.
-
-GetOptimumValue(),
-
-0.1);
+TEST(GKLS_Test, BasicTest_5dim) {
+    int functionId = 1;
+    int input_size = 5;
+    TGKLSProblem tgklsProblem(functionId, input_size);
+    for (auto el: tgklsProblem.GetMaxPoint())
+        std::cout << el << "\n";
+    double res = calculateTGKLS(tgklsProblem);
+    EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
