@@ -119,22 +119,18 @@ int main() {
 
 int main() {
     THillProblem tHillProblem;
-    size_t input_size = 2;
-    
-    // Определяем границы поиска
-    std::vector<std::pair<double, double>> bounds(input_size, {-1.0, 1.0});
-    
     auto res = shgo([&](const std::vector<double> &x) -> double {
         return tHillProblem.ComputeFunction(x);
-    }, bounds);
-    
-    std::cout << "Minimum value: " << res.minimum_value << std::endl;
+    }, {std::make_pair(-1., 1.)});
+    std::cout << "Minimum value: " << res.fun << std::endl;
     std::cout << "Argument for minimum: (";
-    for (size_t i = 0; i < res.minimizers.size(); ++i) {
-        std::cout << res.minimizers[i];
-        if (i < res.minimizers.size() - 1) std::cout << ", ";
+    for (size_t i = 0; i < res.x.size(); ++i) {
+        std::cout << res.x[i];
+        if (i < res.x.size() - 1) std::cout << ", ";
     }
     std::cout << ")" << std::endl;
+    std::cout<<"Global minimum: "<<tHillProblem.GetOptimumValue()<<"\n";
+    std::cout<<"Call count: "<<res.nfev<<"\n";
     return 0;
 }
 ```
