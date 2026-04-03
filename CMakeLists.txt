@@ -33,6 +33,11 @@ add_executable(
         ${EXECUTABLE_NAME_TEST}
         ${TESTS}
         ${GCGEN_SRC_FILES}
+        src/differential_evolution/differential_evolution.cpp
+        include/create_bounds.h
+        include/optimize_result.h
+        src/shgo/shgo.cpp
+        include/shgo/measuring_time.h
 
 )
 target_link_libraries(
@@ -47,11 +52,14 @@ add_subdirectory(3rd_party/GCGen)
 
 add_executable(${PROJECT_NAME}
         ${GCGEN_SRC_FILES}
-        include/DE_finding_global_min.h
-        src/DE_finding_global_min.cpp
+        include/differential_evolution/differential_evolution.h
+        src/differential_evolution/differential_evolution.cpp
         example/main.cpp
         include/measuring_time.h
         src/measuring_time.cpp
+        include/create_bounds.h
+        src/shgo/shgo.cpp
+        include/shgo/measuring_time.h
 )
 #add_library(${PROJECT_NAME}_lib
 #        ${GCGEN_SRC_FILES}

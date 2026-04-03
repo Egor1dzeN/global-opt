@@ -2,15 +2,17 @@
 // Created by egorm on 10-Nov-25.
 //
 #include "gtest/gtest.h"
+#include "create_bounds.h"
 #include "Grishagin/grishagin_function.hpp"
-#include "DE_finding_global_min.h"
+#include "differential_evolution/differential_evolution.h"
 #include "measuring_time.h"
 
 double calculateTGrishagin(TGrishaginProblem &grishaginProblem) {
-    auto [optimal_value, _] = findGlobalMinimum([&](const std::vector<double> &x) -> double {
+    std::vector<std::pair<double, double>> bounds = CreateBounds(grishaginProblem);
+    auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return grishaginProblem.ComputeFunction(x);
-    }, grishaginProblem.GetDimension(), 0.0, 1.0, 300);
-    return optimal_value;
+    }, bounds);
+    return res.fun;
 }
 
 TEST(Grishagin_Test, BasicTest_1) {

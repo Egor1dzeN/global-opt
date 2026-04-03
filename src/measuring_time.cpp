@@ -3,7 +3,7 @@
 //
 #include <chrono>
 #include "measuring_time.h"
-#include "DE_finding_global_min.h"
+#include "differential_evolution/differential_evolution.h"
 #include "iostream"
 #include "fstream"
 
@@ -31,15 +31,15 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
               int count_generation) {
     auto start_time = std::chrono::high_resolution_clock::now();
 
-    auto res = findGlobalMinimum([&](const std::vector<double> &x) -> double {
+    auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return iOptProblem.ComputeFunction(x);
-    }, input_size, -1.0, 1.0, count_generation);
+    }, {std::make_pair(-1., 1.)}, count_generation);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
 
-    double pred_output = res.first;
-    std::vector<double> pred_input = res.second;
+    double pred_output = res.fun;
+    std::vector<double> pred_input = res.x;
 
     double correct_output = iOptProblem.GetOptimumValue();
     std::vector<double> correct_input = iOptProblem.GetOptimumPoint();
