@@ -7,36 +7,49 @@
 #include "measuring_time.h"
 #include "create_bounds.h"
 
-double calculateTGKLS(TGKLSProblem &tgklsProblem) {
+double calculateTGKLS_DE(TGKLSProblem &tgklsProblem) {
     std::vector<std::pair<double, double>> bounds = CreateBounds(tgklsProblem);
+    for (auto [f, s] : bounds){
+        std::cout<<f<<" "<<s<<"\n";
+    }
     auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return tgklsProblem.ComputeFunction(x);
     }, bounds, 1000);
+    for (int i = 0;i<res.x.size();++i){
+        std::cout<<res.x[i]<<" ";
+    }
+    std::cout<<std::endl;
     return res.fun;
 }
 
-TEST(GKLS_Test, BasicTest_2dim_1) {
+TEST(GKLS_de_Test, BasicTest_2dim_1) {
     int functionId = 1;
     int input_size = 2;
     TGKLSProblem tgklsProblem(functionId, input_size);
-    double res = calculateTGKLS(tgklsProblem);
+    double res = calculateTGKLS_DE(tgklsProblem);
     EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
 
-TEST(GKLS_Test, BasicTest_3dim) {
+TEST(GKLS_de_Test, BasicTest_3dim) {
     int functionId = 1;
     int input_size = 3;
     TGKLSProblem tgklsProblem(functionId, input_size);
-    double res = calculateTGKLS(tgklsProblem);
+    double res = calculateTGKLS_DE(tgklsProblem);
+    for (int i = 0;i<tgklsProblem.GetOptimumPoint().size();++i){
+        std::cout<<tgklsProblem.GetOptimumPoint()[i]<<" ";
+    }
+    std::cout<<std::endl;
     EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
 
-TEST(GKLS_Test, BasicTest_5dim) {
+TEST(GKLS_de_Test, BasicTest_5dim) {
     int functionId = 1;
     int input_size = 5;
     TGKLSProblem tgklsProblem(functionId, input_size);
-    for (auto el: tgklsProblem.GetMaxPoint())
-        std::cout << el << "\n";
-    double res = calculateTGKLS(tgklsProblem);
+    for (int i = 0;i<tgklsProblem.GetOptimumPoint().size();++i){
+        std::cout<<tgklsProblem.GetOptimumPoint()[i]<<" ";
+    }
+    std::cout<<std::endl;
+    double res = calculateTGKLS_DE(tgklsProblem);
     EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }

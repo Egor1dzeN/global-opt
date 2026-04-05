@@ -89,7 +89,7 @@ std::vector<Point> generate_points(const std::vector<pdd> &bounds, int n) {
 
 OptimizeResult
 shgo(const std::function<double(const std::vector<double> &)> &function,
-     const std::vector<std::pair<double, double>> &bounds) {
+     const std::vector<std::pair<double, double>> &bounds, int count_point) {
     int call_count = 0;
     Delaunay delaunay;
     delaunay.generate_super_simplex(bounds);
@@ -101,7 +101,7 @@ shgo(const std::function<double(const std::vector<double> &)> &function,
         call_count++;
         return cache[key] = function(p);
     };
-    std::vector<Point> points_ = generate_points(bounds, 300);
+    std::vector<Point> points_ = generate_points(bounds, count_point);
     for (auto &point: points_) {
         delaunay.point_insert(point);
     }
@@ -169,3 +169,4 @@ shgo(const std::function<double(const std::vector<double> &)> &function,
     optimizeResult.nfev = call_count;
     return optimizeResult;
 }
+

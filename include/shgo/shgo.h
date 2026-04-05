@@ -13,6 +13,6 @@
 #include "optimize_result.h"
 
 OptimizeResult
-shgo(const std::function<double(const std::vector<double> &)> &, const std::vector<std::pair<double, double>> &);
+shgo(const std::function<double(const std::vector<double> &)> &, const std::vector<std::pair<double, double>> &, int count_point = 100);
 
 #endif //SHGO2_SHGO_H

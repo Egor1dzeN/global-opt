@@ -6,18 +6,19 @@
 
 
 const int RANDOM_SEED = 42;
-const int NP = 40;
+const int NP = 100;
 const double F = 0.8;
 const double CR = 0.9;
 
 
-std::mt19937 gen(RANDOM_SEED);
-std::uniform_real_distribution<double> dis_real(0.0, 1.0);
-std::uniform_int_distribution<int> dis_index(0, NP - 1);
+
 
 OptimizeResult
 differential_evolution(const std::function<double(const std::vector<double> &)> &objFunc,
                        const std::vector<std::pair<double, double>> &bounds, int count_generation) {
+    std::mt19937 gen(RANDOM_SEED);
+    std::uniform_real_distribution<double> dis_real(0.0, 1.0);
+    std::uniform_int_distribution<int> dis_index(0, NP - 1);
     int call_count = 0;
     auto function = [&objFunc, &call_count](const std::vector<double> &input) {
         call_count++;

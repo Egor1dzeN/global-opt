@@ -18,7 +18,8 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 file(GLOB_RECURSE TESTS
-        tests/*.cpp
+        tests/differential_evolution/*.cpp
+        tests/shgo/*.cpp
         src/*.cpp
 )
 file(GLOB GCGEN_SRC_FILES
