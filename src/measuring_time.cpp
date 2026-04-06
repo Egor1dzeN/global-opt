@@ -5,27 +5,29 @@
 #include <algorithm>
 #include "measuring_time.h"
 #include "optimize_result.h"
-#include "iostream"
-#include "fstream"
+#include <iostream>
+#include <fstream>
+#include "differential_evolution/differential_evolution.h"
+#include "shgo/shgo.h"
 
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
-    if (vec.empty()) {
-        os << "{}";
-    } else if (vec.size() == 1) {
-        os << vec[0];
-    } else {
-        os << "{";
-        for (size_t i = 0; i < vec.size(); ++i) {
-            os << vec[i];
-            if (i != vec.size() - 1) {
-                os << ", ";
-            }
-        }
-        os << "}";
-    }
-    return os;
-}
+//template<typename T>
+//std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
+//    if (vec.empty()) {
+//        os << "{}";
+//    } else if (vec.size() == 1) {
+//        os << vec[0];
+//    } else {
+//        os << "{";
+//        for (size_t i = 0; i < vec.size(); ++i) {
+//            os << vec[i];
+//            if (i != vec.size() - 1) {
+//                os << ", ";
+//            }
+//        }
+//        os << "}";
+//    }
+//    return os;
+//}
 
 TResult
 runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, const std::string &method,
@@ -36,14 +38,10 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     std::transform(method_lower.begin(), method_lower.end(), method_lower.begin(),
                    [](unsigned char c) { return std::tolower(c); });
     if (method_lower == "de") {
-#include "differential_evolution/differential_evolution.h"
-
         res = differential_evolution([&](const std::vector<double> &x) -> double {
             return iOptProblem.ComputeFunction(x);
         }, {std::make_pair(-1., 1.)}, count_generation);
     } else if(method_lower == "shgo"){
-#include "shgo/shgo.h"
-
         res = shgo([&](const std::vector<double> &x) -> double {
             return iOptProblem.ComputeFunction(x);
         }, {std::make_pair(-1., 1.)}, count_generation);
