@@ -78,7 +78,8 @@ std::pair<TResult, int> avgTResult(const std::vector<TResult> &input) {
 //
 template<typename T>
 std::enable_if_t<std::is_base_of_v<IOptProblem, T>>
-measureTime(int startFunctionID = 1, int endFunctionID = 101, int run_count = 10, int input_size = 1) {
+measureTime(int startFunctionID = 1, int endFunctionID = 101, int run_count = 10, int input_size = 1,
+            const std::string &method = "DE") {
     std::vector<std::pair<TResult, int>> result_list;
 
     // Determine input size based on problem type
@@ -105,8 +106,7 @@ measureTime(int startFunctionID = 1, int endFunctionID = 101, int run_count = 10
         // Run multiple tests for the same problem
         for (int j = 0; j < run_count; ++j) {
             TResult res = runSingleTest(problem, functionId,
-                                        demangle(typeid(problem).name()),
-                                        input_size);
+                                        demangle(typeid(problem).name()), method);
             results[j] = res;
         }
 
@@ -141,7 +141,7 @@ int main() {
         if (i < res.x.size() - 1) std::cout << ", ";
     }
     std::cout << ")" << std::endl;
-    std::cout<<"Global minimum: "<<tHillProblem.GetOptimumValue()<<"\n";
-    std::cout<<"Call count: "<<res.nfev<<"\n";
+    std::cout << "Global minimum: " << tHillProblem.GetOptimumValue() << "\n";
+    std::cout << "Call count: " << res.nfev << "\n";
     return 0;
 }

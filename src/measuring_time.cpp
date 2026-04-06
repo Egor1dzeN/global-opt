@@ -2,8 +2,9 @@
 // Created by egorm on 28-Oct-25.
 //
 #include <chrono>
+#include <algorithm>
 #include "measuring_time.h"
-#include "differential_evolution/differential_evolution.h"
+#include "optimize_result.h"
 #include "iostream"
 #include "fstream"
 
@@ -27,13 +28,27 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
 }
 
 TResult
-runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size,
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, const std::string &method,
               int count_generation) {
     auto start_time = std::chrono::high_resolution_clock::now();
+    OptimizeResult res;
+    std::string method_lower = method;
+    std::transform(method_lower.begin(), method_lower.end(), method_lower.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    if (method_lower == "de") {
+#include "differential_evolution/differential_evolution.h"
 
-    auto res = differential_evolution([&](const std::vector<double> &x) -> double {
-        return iOptProblem.ComputeFunction(x);
-    }, {std::make_pair(-1., 1.)}, count_generation);
+        res = differential_evolution([&](const std::vector<double> &x) -> double {
+            return iOptProblem.ComputeFunction(x);
+        }, {std::make_pair(-1., 1.)}, count_generation);
+    } else if(method_lower == "shgo"){
+#include "shgo/shgo.h"
+
+        res = shgo([&](const std::vector<double> &x) -> double {
+            return iOptProblem.ComputeFunction(x);
+        }, {std::make_pair(-1., 1.)}, count_generation);
+    }
+
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
@@ -55,6 +70,7 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     result.execution_time_ms = double(duration.count()) / 1000.0; // преобразуем в миллисекунды
     result.count_generation = count_generation;
     result.success = compare(pred_output, correct_output, 0.1);
+    result.call_count = res.nfev;
 
     return result;
 }
@@ -65,7 +81,7 @@ void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, 
 
     // Header CSV
     file << "function_id,function_name,predicted_output,correct_output,"
-         << "output_deviation,predicted_input,correct_input,execution_time_ms,count_generation,success\n";
+         << "output_deviation,predicted_input,correct_input,execution_time_ms,count_generation,call_count,success\n";
 
     for (const auto &result_pair: all_results) {
         TResult tResult = result_pair.first;
@@ -79,6 +95,7 @@ void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, 
              << tResult.correct_input << "\","
              << tResult.execution_time_ms << ","
              << tResult.count_generation << ","
+             << tResult.call_count << ","
              << count_success << "/" << lunch_count << "\n";
 
     }

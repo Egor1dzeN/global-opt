@@ -16,10 +16,11 @@ struct TResult {
     double execution_time_ms;
     bool success;
     int count_generation;
+    int call_count;
 };
 
 TResult
-runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, size_t input_size,
+runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &function_name, const std::string& method = "DE",
               int count_generation = 200);
 
 void writeResultsToCSV(const std::vector<std::pair<TResult, int>> &all_results, const std::string &filename,
