@@ -35,8 +35,6 @@ TEST(GKLS_Test, BasicTest_3dim) {
     int functionId = 1;
     int input_size = 3;
     TGKLSProblem tgklsProblem(functionId, input_size);
-    for (auto el: tgklsProblem.GetMaxPoint())
-        std::cout << el << "\n";
     double res = calculateTGKLS_shgo(tgklsProblem, 7);
     EXPECT_NEAR(res, tgklsProblem.GetOptimumValue(), 0.1);
 }
