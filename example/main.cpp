@@ -131,7 +131,7 @@ int main() {
     THillProblem tHillProblem;
     size_t input_size = 1;
     constexpr int count_generation = 100;
-    auto res = shgo([&](const std::vector<double> &x) -> double {
+    auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return tHillProblem.ComputeFunction(x);
     }, {std::make_pair(-1., 1.)});
     std::cout << "Minimum value: " << res.fun << std::endl;
