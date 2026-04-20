@@ -30,7 +30,7 @@ TEST(Grishagin_de_Test, BasicTest_2) {
 }
 
 TEST(Grishagin_de_Test, BasicTest_3) {
-    int functionId = 5;
+    int functionId = 7;
     TGrishaginProblem tGrishaginProblem(functionId);
     double res = calculateTGrishagin_DE(tGrishaginProblem);
     EXPECT_NEAR(res, tGrishaginProblem.GetOptimumValue(), 0.1);
