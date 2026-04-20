@@ -8,7 +8,30 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} (${{ matrix.compiler }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # failure-fast: false позволяет остальным тестам дойти до конца, даже если один упал
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            compiler: gcc
+            cc: gcc
+            cxx: g++
+          - os: ubuntu-latest
+            compiler: clang
+            cc: clang
+            cxx: clang++
+          - os: macos-latest
+            compiler: apple-clang
+            cc: clang
+            cxx: clang++
+          - os: windows-latest
+            compiler: msvc
+            cc: cl
+            cxx: cl
 
     steps:
       - name: Checkout code with submodules
@@ -16,18 +39,29 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install dependencies
+      - name: Install dependencies (Linux)
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ make
+          sudo apt-get install -y cmake g++ make clang
 
       - name: Configure project
-        run: cmake -B build -S .
+        # Мы передаем компиляторы через стандартные переменные окружения CC и CXX
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 
       - name: Build project
-        run: cmake --build build
+        run: cmake --build build --config Release
 
       - name: Run tests
+        shell: bash
         run: |
           cd build
-          ./find_global_opt_test
+          # Для Windows исполняемые файлы часто лежат в подпапках (напр. Release/)
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            ./Release/find_global_opt_test
+          else
+            ./find_global_opt_test
+          fi
