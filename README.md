@@ -1,6 +1,6 @@
 # 🔍 Find Global Opt: Библиотека для поиска глобального минимума функций
 
-[![CMake](https://img.shields.io/badge/CMake-3.14+-brightgreen.svg)](https://cmake.org/)
+[![CMake](https://img.shields.io/badge/CMake-3.31+-brightgreen.svg)](https://cmake.org/)
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![Tests](https://img.shields.io/badge/🧪-GoogleTest-orange.svg)](https://github.com/google/googletest)
 [![License](https://img.shields.io/badge/📄-MIT-yellow.svg)](LICENSE)

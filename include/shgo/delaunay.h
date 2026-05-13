@@ -171,15 +171,6 @@ public:
 
         simplexes.emplace_back(super_simplex_vertices);
 
-//        std::cout << "Super simplex (" << dimension << "D):\n";
-//        for (size_t i = 0; i < super_simplex_vertices.size(); ++i) {
-//            std::cout << "v" << i << ": ";
-//            for (size_t j = 0; j < dimension; ++j) {
-//                std::cout << super_simplex_vertices[i][j];
-//                if (j < dimension - 1) std::cout << ", ";
-//            }
-//            std::cout << "\n";
-//        }
     }
 
     void point_insert(const Point &point) {
@@ -227,7 +218,6 @@ public:
             }
         }
 
-        // Удаляем плохие симплексы в обратном порядке по индексам
         std::sort(bad_simplex_indices.rbegin(), bad_simplex_indices.rend());
         std::vector<Simplex> new_simplexes;
         std::set<size_t> bad_set(bad_simplex_indices.begin(), bad_simplex_indices.end());

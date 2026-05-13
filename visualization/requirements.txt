@@ -1,2 +1,4 @@
 numpy==2.4.0
 matplotlib==3.10.8
+pyqt6
+iOpt

@@ -1,6 +1,7 @@
 //
 // Created by egorm on 3/29/2026.
 //
+#include <random>
 #include "shgo/shgo.h"
 
 
@@ -12,9 +13,10 @@ std::size_t hash(const Point &point) {
     return seed;
 }
 
-Point gradient_descent(std::function<double(Point)> func, const Point &start_point, double learning_rate = 0.01,
-                       int max_iterations = 1000,
-                       double tolerance = 1e-6) {
+[[maybe_unused]] Point
+gradient_descent(std::function<double(Point)> func, const Point &start_point, double learning_rate = 0.01,
+                 int max_iterations = 1000,
+                 double tolerance = 1e-6) {
     Point current_point = start_point;
     double current_value = func(current_point);
 
@@ -54,33 +56,44 @@ Point gradient_descent(std::function<double(Point)> func, const Point &start_poi
     return current_point;
 }
 
+static constexpr int HALTON_PRIMES[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
+
+double halton_element(int index, int base) {
+    double result = 0.0;
+    double f = 1.0 / base;
+    int i = index + 1;
+    while (i > 0) {
+        result += f * (i % base);
+        i /= base;
+        f /= base;
+    }
+    return result;
+}
+
 std::vector<Point> generate_points(const std::vector<pdd> &bounds, int n) {
     size_t dim = bounds.size();
-    int total_points = static_cast<int>(std::pow(n, dim));
-
     std::vector<Point> points;
-    points.reserve(total_points);
+    points.reserve(n);
 
-    std::vector<int> indices(dim, 0);
-
-    while (true) {
-        std::vector<double> coords(dim);
-        for (int d = 0; d < dim; ++d) {
-            double min_val = bounds[d].first;
-            double max_val = bounds[d].second;
-            double t = static_cast<double>(indices[d]) / (n - 1);
-            coords[d] = min_val + t * (max_val - min_val);
+    if (dim <= 12) {
+        for (int i = 0; i < n; ++i) {
+            Point point(dim);
+            for (size_t d = 0; d < dim; ++d) {
+                double t = halton_element(i, HALTON_PRIMES[d]);
+                point[d] = bounds[d].first + t * (bounds[d].second - bounds[d].first);
+            }
+            points.push_back(point);
         }
-        points.emplace_back(coords);
-
-        int d = int(dim) - 1;
-        while (d >= 0 && ++indices[d] >= n) {
-            indices[d] = 0;
-            --d;
-        }
-
-        if (d < 0) {
-            break;
+    } else {
+        std::mt19937 gen(42);
+        std::uniform_real_distribution<double> dis(0.0, 1.0);
+        for (int i = 0; i < n; ++i) {
+            Point point(dim);
+            for (size_t d = 0; d < dim; ++d) {
+                double t = dis(gen);
+                point[d] = bounds[d].first + t * (bounds[d].second - bounds[d].first);
+            }
+            points.push_back(point);
         }
     }
 
@@ -146,16 +159,15 @@ shgo(const std::function<double(const std::vector<double> &)> &function,
         }
     }
     HookeJeevesMethod hj_method(cached_func,
-                                bounds, // передаем границы
-                                0.01, // начальный шаг
-                                1e-8, // точность
-                                2.0, // множитель шага
-                                5000); // макс. итераций
+                                bounds,
+                                0.01,
+                                1e-8,
+                                2.0,
+                                8000);
     Point point_min;
     double point_min_val = std::numeric_limits<double>::max();
     for (const auto &candidate: minimum_candidates) {
         Point local_min = hj_method.optimize(candidate);
-//        Point local_min = local_minimize(function, candidate);
 
         double value = cached_func(local_min);
         if (value < point_min_val) {
