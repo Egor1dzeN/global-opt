@@ -10,9 +10,10 @@
 
 double calculateTGrishagin_DE(THillProblem &hillProblem) {
     std::vector<std::pair<double, double>> bounds = CreateBounds(hillProblem);
+    DEOptions option(1000, 1000);
     auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return hillProblem.ComputeFunction(x);
-    }, bounds, 300);
+    }, bounds, option);
     return res.fun;
 }
 

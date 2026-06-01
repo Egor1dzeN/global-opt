@@ -40,7 +40,7 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     if (method_lower == "de") {
         res = differential_evolution([&](const std::vector<double> &x) -> double {
             return iOptProblem.ComputeFunction(x);
-        }, {std::make_pair(-1., 1.)}, count_generation);
+        }, {std::make_pair(-1., 1.)});
     } else if(method_lower == "shgo"){
         res = shgo([&](const std::vector<double> &x) -> double {
             return iOptProblem.ComputeFunction(x);

@@ -7,7 +7,7 @@
 #include "shgo/shgo.h"
 #include "measuring_time.h"
 
-double calculateTGrishagin_shgo(TGrishaginProblem &grishaginProblem, int count_point=20) {
+double calculateTGrishagin_shgo(TGrishaginProblem &grishaginProblem, int count_point=1000) {
     std::vector<std::pair<double, double>> bounds = CreateBounds(grishaginProblem);
     auto res = shgo([&](const std::vector<double> &x) -> double {
         return grishaginProblem.ComputeFunction(x);

@@ -13,7 +13,7 @@ double calculateTShekel_DE(TShekelProblem &hillProblem) {
     std::vector<std::pair<double, double>> bounds = CreateBounds(hillProblem);
     auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return hillProblem.ComputeFunction(x);
-    }, bounds, 300);
+    }, bounds);
     return res.fun;
 }
 

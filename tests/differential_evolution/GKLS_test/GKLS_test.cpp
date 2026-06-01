@@ -12,9 +12,10 @@ double calculateTGKLS_DE(TGKLSProblem &tgklsProblem) {
     for (auto [f, s] : bounds){
         std::cout<<f<<" "<<s<<"\n";
     }
+    DEOptions option(1000, 1000);
     auto res = differential_evolution([&](const std::vector<double> &x) -> double {
         return tgklsProblem.ComputeFunction(x);
-    }, bounds, 1000);
+    }, bounds, option);
     return res.fun;
 }
 
