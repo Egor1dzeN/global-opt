@@ -24,8 +24,10 @@ enable_testing()
 file(GLOB_RECURSE TESTS
         tests/differential_evolution/*.cpp
         tests/shgo/*.cpp
+        tests/test_functions/*.cpp
         src/differential_evolution/*.cpp
         src/shgo/*.cpp
+        src/test_functions/*.cpp
         src/measuring_time.cpp
 )
 file(GLOB GCGEN_SRC_FILES
@@ -65,6 +67,8 @@ add_executable(${PROJECT_NAME}
         include/create_bounds.h
         src/shgo/shgo.cpp
         include/shgo/measuring_time.h
+        include/test_functions/classic_functions.h
+        src/test_functions/classic_functions.cpp
 )
 #add_library(${PROJECT_NAME}_lib
 #        ${GCGEN_SRC_FILES}

@@ -164,6 +164,29 @@ int main() {
 - **Hill** функции — функции с плато
 - **Shekel** функции — функции с острыми пиками
 
+### Классические тестовые функции
+
+Кроме GCGen, в библиотеке есть 54 классические функции (`include/test_functions/classic_functions.h`)
+с известными границами и глобальным минимумом.
+
+- **Любой размерности (25):** Sphere, Rastrigin, Ackley, Rosenbrock, Griewank, Schwefel, Levy, Zakharov,
+  Styblinski–Tang, Dixon–Price, Sum Squares, Rotated Hyper-Ellipsoid, Sum of Different Powers, Trid,
+  Powell, Alpine N.1, Salomon, Qing, Exponential, Bent Cigar, Discus, Schwefel 2.22, Step, Quartic, Michalewicz
+- **Фиксированной размерности (29):** Beale, Booth, Matyas, Himmelblau, Three-Hump Camel, Six-Hump Camel, Easom,
+  Goldstein–Price, Branin, Bukin N.6, Cross-in-Tray, Drop-Wave, Eggholder, Holder Table, Levy N.13,
+  Schaffer N.2, Schaffer N.4, McCormick, Shubert, Bohachevsky N.1, Leon, Bird, De Jong N.5 (2D);
+  Hartmann 3D; Colville, Shekel 5/7/10 (4D); Hartmann 6D
+
+```cpp
+#include "test_functions/classic_functions.h"
+
+auto tf = test_functions::rastrigin(5);              // или get_function("rastrigin", 5)
+auto res = shgo(tf.function, tf.bounds);
+std::cout << res.fun << " vs " << tf.f_opt << "\n";
+
+for (const auto &f : test_functions::functions_for_dimension(2)) { /* все 2D-функции */ }
+```
+
 ## 📊 Визуализация результатов
 
 Библиотека включает скрипты Python для визуализации процесса оптимизации:
