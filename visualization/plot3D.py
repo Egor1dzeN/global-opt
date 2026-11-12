@@ -8,7 +8,7 @@ from functions.function import Function
 
 def create_3d_animation(obj_function: Function, generations, gif_filename,
                         pop_history, fit_history, best_history):
-    """Создает анимацию для 2D функций (3D визуализация)"""
+    """Create an animation for 2D functions (3D plot)."""
 
     def func(x):
         return obj_function.compute(x)
@@ -35,26 +35,26 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
     ax1.set_xlabel('X', fontsize=12)
     ax1.set_ylabel('Y', fontsize=12)
     ax1.set_zlabel('f(X, Y)', fontsize=12)
-    ax1.set_title(f'Дифференциальная эволюция: {obj_function.__class__.__name__}\nПоколение: 0/{generations}',
+    ax1.set_title(f'Differential evolution: {obj_function.__class__.__name__}\nGeneration: 0/{generations}',
                   fontsize=14, pad=20)
 
-    fig.colorbar(surf, ax=ax1, shrink=0.5, aspect=5, label='Значение функции')
+    fig.colorbar(surf, ax=ax1, shrink=0.5, aspect=5, label='Function value')
 
-    scatter_pop = ax1.scatter([], [], [], c='red', s=30, alpha=0.8, label='Популяция', depthshade=True)
+    scatter_pop = ax1.scatter([], [], [], c='red', s=30, alpha=0.8, label='Population', depthshade=True)
     scatter_best = ax1.scatter([], [], [], c='green', s=100, marker='*',
-                               alpha=1, label='Лучшая особь', depthshade=True)
+                               alpha=1, label='Best individual', depthshade=True)
     ax1.legend(loc='upper right')
 
     ax2.set_xlim(0, generations)
     ax2.set_ylim(min(best_history) - 0.1 * abs(min(best_history)),
                  max(best_history[:10]) + 0.1 * abs(max(best_history[:10])))
-    ax2.set_xlabel('Поколение', fontsize=12)
-    ax2.set_ylabel('Лучшее значение', fontsize=12)
-    ax2.set_title('Сходимость алгоритма', fontsize=14)
+    ax2.set_xlabel('Generation', fontsize=12)
+    ax2.set_ylabel('Best value', fontsize=12)
+    ax2.set_title('Convergence', fontsize=14)
     ax2.grid(True, alpha=0.3)
 
-    line_best, = ax2.plot([], [], 'b-', linewidth=2, label='Лучшее значение')
-    scatter_current_best = ax2.scatter([], [], c='red', s=50, zorder=5, label='Текущее поколение')
+    line_best, = ax2.plot([], [], 'b-', linewidth=2, label='Best value')
+    scatter_current_best = ax2.scatter([], [], c='red', s=50, zorder=5, label='Current generation')
     ax2.legend(loc='upper right')
 
     info_text = ax2.text(0.02, 0.98, '', transform=ax2.transAxes,
@@ -62,7 +62,7 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
                          bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
 
     def init():
-        """Инициализация анимации"""
+        """Initialize the animation."""
         scatter_pop._offsets3d = ([], [], [])
         scatter_best._offsets3d = ([], [], [])
         line_best.set_data([], [])
@@ -71,7 +71,7 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
         return scatter_pop, scatter_best, line_best, scatter_current_best, info_text
 
     def update(frame):
-        """Обновление кадра анимации"""
+        """Update an animation frame."""
         current_pop = pop_history[frame]
         current_fit = fit_history[frame]
 
@@ -90,7 +90,7 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
         scatter_pop._offsets3d = (x_pop, y_pop, z_pop)
         scatter_best._offsets3d = best_coords
 
-        ax1.set_title(f'Дифференциальная эволюция: {obj_function.__class__.__name__}\nПоколение: {frame}/{generations}',
+        ax1.set_title(f'Differential evolution: {obj_function.__class__.__name__}\nGeneration: {frame}/{generations}',
                       fontsize=14, pad=20)
 
         x_history = list(range(frame + 1))
@@ -99,9 +99,9 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
         line_best.set_data(x_history, y_history)
         scatter_current_best.set_offsets([[frame, best_history[frame]]])
 
-        info_text.set_text(f'Поколение: {frame}\n'
-                           f'Лучшее значение: {best_history[frame]:.6f}\n'
-                           f'Лучшая точка: ({current_pop[best_idx, 0]:.3f}, {current_pop[best_idx, 1]:.3f})')
+        info_text.set_text(f'Generation: {frame}\n'
+                           f'Best value: {best_history[frame]:.6f}\n'
+                           f'Best point: ({current_pop[best_idx, 0]:.3f}, {current_pop[best_idx, 1]:.3f})')
 
         if frame > 0:
             ax2.set_ylim(min(best_history[:frame + 1]) - 0.1 * abs(min(best_history[:frame + 1])),
@@ -113,13 +113,13 @@ def create_3d_animation(obj_function: Function, generations, gif_filename,
                         init_func=init, blit=False, repeat=False,
                         interval=200)
 
-    print(f"Сохранение GIF как '{gif_filename}'...")
+    print(f"Saving GIF to '{gif_filename}'...")
 
     if len(pop_history) > 0:
         ani.save(gif_filename, writer=PillowWriter(fps=5))
-        print(f"Анимация сохранена!")
+        print(f"Animation saved")
     else:
-        print("Ошибка: нет данных для анимации")
+        print("Error: no data to animate")
 
     plt.close(fig)
     return ani

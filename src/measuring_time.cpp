@@ -46,7 +46,7 @@ runSingleTest(IOptProblem &iOptProblem, int function_index, const std::string &f
     result.output_deviation = std::abs(pred_output - correct_output);
     result.predicted_input = pred_input;
     result.correct_input = correct_input;
-    result.execution_time_ms = double(duration.count()) / 1000.0; // преобразуем в миллисекунды
+    result.execution_time_ms = double(duration.count()) / 1000.0; // convert to milliseconds
     result.count_generation = count_generation;
     result.success = compare(pred_output, correct_output, 0.1);
     result.call_count = res.nfev;

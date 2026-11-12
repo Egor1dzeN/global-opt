@@ -1,126 +1,105 @@
-# 🔍 Find Global Opt: Библиотека для поиска глобального минимума функций
+# Find Global Opt
 
 [![CMake](https://img.shields.io/badge/CMake-3.31+-brightgreen.svg)](https://cmake.org/)
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
-[![Tests](https://img.shields.io/badge/🧪-GoogleTest-orange.svg)](https://github.com/google/googletest)
-[![License](https://img.shields.io/badge/📄-MIT-yellow.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-GoogleTest-orange.svg)](https://github.com/google/googletest)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-**Find Global Opt** — это высокопроизводительная библиотека на C++ для поиска глобального минимума многомерных функций с
-использованием современных методов глобальной оптимизации. 📈
+Find Global Opt is a C++17 library for finding the global minimum of multidimensional functions
+over a box-constrained domain.
 
-## ✨ Особенности
+## Features
 
-- 🎯 **Дифференциальная эволюция (DE)** — популярный метод эволюционной оптимизации
-- 🌐 **SHGO (Stochastic Hierarchical Global Optimization)** — иерархический стохастический метод для сложных ландшафтов
-- 📊 **Поддержка тестовых функций**: GKLS, Grishagin, Hill,
-  Shekel [Репозиторий функций](https://github.com/OptimLLab/GCGen/tree/master)
-- ⚡ **Высокая производительность** благодаря современному C++17
-- 🧪 **Полное покрытие тестами** с GoogleTest
-- 🕒 **Измерение времени выполнения** функций
-- 📈 **Визуализация** процесса оптимизации
-- 🔧 **Простая интеграция** в существующие проекты
+- **Differential Evolution (DE)**: population-based evolutionary method.
+- **SHGO (Simplicial Homology Global Optimization)**: Halton sampling, Delaunay triangulation and
+  local refinement with the Hooke-Jeeves method.
+- **Test problems**: GKLS, Grishagin, Hill and Shekel families from
+  [GCGen](https://github.com/OptimLLab/GCGen), plus 54 classic benchmark functions.
+- **Python bindings** (pybind11) and visualization scripts.
+- **Benchmark** executable for measuring time and solution quality (see [benchmark/README.md](benchmark/README.md)).
 
-## 🚀 Быстрый старт
+## Requirements
 
-### 📋 Предварительные требования
+- CMake 3.31 or newer
+- C++17 compiler (GCC 11+, Clang 14+, MSVC 2022+)
+- Git (the GCGen dependency is a submodule)
 
-- **CMake** 3.31 или выше
-- **Компилятор C++17** (GCC 11+, Clang 14+, MSVC 2022+)
-- **Git** для клонирования зависимостей
-
-### 📥 Установка и сборка
+## Build
 
 ```bash
-# 1. Клонируйте репозиторий и загрузите сабмодули
-git clone --recursive  https://github.com/Egor1dzeN/global-opt find_global_opt
+git clone --recursive https://github.com/Egor1dzeN/global-opt find_global_opt
 cd find_global_opt
 
-# 2. Создайте директорию сборки
-mkdir build && cd build
-
-# 3. Сконфигурируйте проект
-cmake -DCMAKE_BUILD_TYPE=Release ..
-
-# 4. Соберите проект
-cmake --build . --config Release --parallel
-
-# 5. Запустите пример
-./find_global_opt
+cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake --build build --config Release --parallel
 ```
 
-## 📁 Структура проекта
+Targets:
+
+| Target                      | Description                       |
+|-----------------------------|-----------------------------------|
+| `find_global_opt`           | Example executable                |
+| `find_global_opt_test`      | GoogleTest suite                  |
+| `find_global_opt_benchmark` | Benchmark of DE and SHGO          |
+| `global_opt_py`             | Python module (pybind11)          |
+
+## Project structure
 
 ```
 find_global_opt/
-├── 📁 include/                           # Заголовочные файлы библиотеки
-│   ├── 📁 differential_evolution/        # 🎯 Алгоритм дифференциальной эволюции
-│   │   └── differential_evolution.h
-│   ├── 📁 shgo/                          # 🌐 SHGO алгоритм
-│   │   ├── shgo.h                        # Основной интерфейс SHGO
-│   │   ├── delaunay.h                    # Триангуляция Делоне
-│   │   ├── edge.h                        # Структура ребра
-│   │   ├── simplex.h                     # Симплекс для поиска локального минимума
-│   │   ├── hooke_jeeves.h                # Метод Хука-Дживса
-│   │   ├── tools.h                       # Вспомогательные инструменты
-│   │   └── measuring_time.h              # ⏱️  Измерение времени
-│   └── measuring_time.h                  # ⏱️  Измерение времени (глобальный)
-├── 📁 src/                               # Исходные файлы
-│   ├── 📁 differential_evolution/        # Реализация DE
-│   │   └── differential_evolution.cpp
-│   ├── 📁 shgo/                          # Реализация SHGO
-│   │   └── shgo.cpp
-│   ├── measuring_time.cpp
-│   └── python_bindings.cpp               # 🐍 Привязки Python (pybind11)
-├── 📁 example/                           # 📖 Примеры использования
-│   └── main.cpp
-├── 📁 tests/                             # 🧪 Тесты
-│   ├── 📁 differential_evolution/        # Тесты DE
-│   │   └── *test.cpp
-│   └── 📁 shgo/                          # Тесты SHGO
-│       └── *test.cpp
-├── 📁 tools/                             # 🔧 Вспомогательные инструменты
-├── 📁 visualization/                     # 📈 Визуализация алгоритмов
-│   ├── animation.py
-│   ├── plot2D.py
-│   ├── plot3D.py
-│   ├── requirements.txt
-│   └── functions/
-├── 📁 3rd_party/                         # 📦 Зависимости
-│   └── GCGen/                            # 📊 Генератор тестовых функций
-├── 📄 CMakeLists.txt                     # 🛠️  Сборка проекта
-└── 📄 README.md                          # 📋 Эта документация
+├── include/
+│   ├── differential_evolution/   Differential Evolution interface
+│   ├── shgo/                     SHGO interface, Delaunay triangulation, Hooke-Jeeves
+│   ├── test_functions/           Classic benchmark functions
+│   ├── optimize_result.h         Result structure
+│   └── measuring_time.h          Execution time measurement
+├── src/                          Implementations and Python bindings
+├── tests/                        GoogleTest suites
+├── benchmark/                    Benchmark executable and reference results
+├── example/                      Usage example
+├── visualization/                Python visualization scripts
+├── 3rd_party/GCGen/              Test problem generator (submodule)
+└── CMakeLists.txt
 ```
 
-## 💡 Использование
+## Usage
 
-### Пример 1: Дифференциальная эволюция (DE)
+Both methods take an objective function and a vector of `(lower, upper)` bounds, one pair per
+dimension, and return an `OptimizeResult`.
+
+### Differential Evolution
 
 ```cpp
-#include "Hill/HillProblem.hpp" //Header from GCGen repository
+#include "Hill/HillProblem.hpp"  // GCGen
 #include "differential_evolution/differential_evolution.h"
 #include <iostream>
 
 int main() {
-    THillProblem tHillProblem;
-    size_t input_size = 1;
-    constexpr int count_generation = 100;
-    auto res = differential_evolution([&](const std::vector<double> &x) -> double {
-        return tHillProblem.ComputeFunction(x);
-    }, {std::make_pair(-1., 1.)});
-    std::cout << "Minimum value: " << res.fun << std::endl;
-    std::cout << "Argument for minimum: (";
-    for (size_t i = 0; i < res.x.size(); ++i) {
-        std::cout << res.x[i];
-        if (i < res.x.size() - 1) std::cout << ", ";
-    }
-    std::cout << ")" << std::endl;
-    std::cout << "Global minimum: " << tHillProblem.GetOptimumValue() << "\n";
-    std::cout << "Call count: " << res.nfev << "\n";
-    return 0;
+    THillProblem problem;
+    DEOptions options;
+    options.maxiter = 1000;
+
+    auto res = differential_evolution([&](const std::vector<double> &x) {
+        return problem.ComputeFunction(x);
+    }, {{-1., 1.}}, options);
+
+    std::cout << "f(x*) = " << res.fun << ", nfev = " << res.nfev << "\n";
+    std::cout << "known optimum = " << problem.GetOptimumValue() << "\n";
 }
 ```
 
-### Пример 2: SHGO (Stochastic Hierarchical Global Optimization)
+`DEOptions` fields:
+
+| Field         | Description                         | Default |
+|---------------|-------------------------------------|---------|
+| `popsize`     | Population size                     | 15      |
+| `F`           | Differential weight                 | 0.8     |
+| `CR`          | Crossover probability               | 0.9     |
+| `maxiter`     | Maximum number of generations       | 1000    |
+| `tol`         | Convergence tolerance               | 1e-6    |
+| `random_seed` | Seed of the random number generator | 42      |
+
+### SHGO
 
 ```cpp
 #include "Hill/HillProblem.hpp"
@@ -128,138 +107,73 @@ int main() {
 #include <iostream>
 
 int main() {
-    THillProblem tHillProblem;
-    auto res = shgo([&](const std::vector<double> &x) -> double {
-        return tHillProblem.ComputeFunction(x);
-    }, {std::make_pair(-1., 1.)});
-    std::cout << "Minimum value: " << res.fun << std::endl;
-    std::cout << "Argument for minimum: (";
-    for (size_t i = 0; i < res.x.size(); ++i) {
-        std::cout << res.x[i];
-        if (i < res.x.size() - 1) std::cout << ", ";
-    }
-    std::cout << ")" << std::endl;
-    std::cout<<"Global minimum: "<<tHillProblem.GetOptimumValue()<<"\n";
-    std::cout<<"Call count: "<<res.nfev<<"\n";
-    return 0;
+    THillProblem problem;
+    auto res = shgo([&](const std::vector<double> &x) {
+        return problem.ComputeFunction(x);
+    }, {{-1., 1.}}, /*count_point=*/100);
+
+    std::cout << "f(x*) = " << res.fun << ", nfev = " << res.nfev << "\n";
 }
 ```
 
-## 🔄 Сравнение методов оптимизации
+`count_point` is the number of initial sample points (default 100).
 
-| Характеристика        | Дифференциальная эволюция | SHGO                            |
-|-----------------------|---------------------------|---------------------------------|
-| **Тип**               | Эволюционный алгоритм     | Иерархический стохастический    |
-| **Скорость**          | Быстрая                   | Более медленная, но точнее      |
-| **Надежность**        | Хорошая                   | Очень высокая                   |
-| **Сложность функции** | Лучше для простых         | Отличная для сложных ландшафтов |
-| **Рекомендуется для** | Реал-тайм задачи          | Критичная точность              |
+### Result
 
-## 📊 Поддерживаемые тестовые функции
+```cpp
+struct OptimizeResult {
+    double fun;              // Minimum value found
+    std::vector<double> x;   // Point at which it was found
+    int nfev;                // Number of objective function evaluations
+};
+```
 
-Библиотека включает генератор тестовых функций **GCGen** из [Репозитория](https://github.com/OptimLLab/GCGen):
+## Test functions
 
-- **GKLS** функции (многомерные) — сложные многомодальные функции
-- **Grishagin** функции — хорошо изученные тестовые функции
-- **Hill** функции — функции с плато
-- **Shekel** функции — функции с острыми пиками
+### GCGen
 
-### Классические тестовые функции
+The [GCGen](https://github.com/OptimLLab/GCGen) generator provides the GKLS (multidimensional),
+Grishagin (2D), Hill (1D) and Shekel (1D) problem families.
 
-Кроме GCGen, в библиотеке есть 54 классические функции (`include/test_functions/classic_functions.h`)
-с известными границами и глобальным минимумом.
+### Classic functions
 
-- **Любой размерности (25):** Sphere, Rastrigin, Ackley, Rosenbrock, Griewank, Schwefel, Levy, Zakharov,
-  Styblinski–Tang, Dixon–Price, Sum Squares, Rotated Hyper-Ellipsoid, Sum of Different Powers, Trid,
-  Powell, Alpine N.1, Salomon, Qing, Exponential, Bent Cigar, Discus, Schwefel 2.22, Step, Quartic, Michalewicz
-- **Фиксированной размерности (29):** Beale, Booth, Matyas, Himmelblau, Three-Hump Camel, Six-Hump Camel, Easom,
-  Goldstein–Price, Branin, Bukin N.6, Cross-in-Tray, Drop-Wave, Eggholder, Holder Table, Levy N.13,
+`include/test_functions/classic_functions.h` defines 54 functions with known bounds and global minimum.
+
+- **Arbitrary dimension (25):** Sphere, Rastrigin, Ackley, Rosenbrock, Griewank, Schwefel, Levy, Zakharov,
+  Styblinski-Tang, Dixon-Price, Sum Squares, Rotated Hyper-Ellipsoid, Sum of Different Powers, Trid,
+  Powell, Alpine N.1, Salomon, Qing, Exponential, Bent Cigar, Discus, Schwefel 2.22, Step, Quartic, Michalewicz.
+- **Fixed dimension (29):** Beale, Booth, Matyas, Himmelblau, Three-Hump Camel, Six-Hump Camel, Easom,
+  Goldstein-Price, Branin, Bukin N.6, Cross-in-Tray, Drop-Wave, Eggholder, Holder Table, Levy N.13,
   Schaffer N.2, Schaffer N.4, McCormick, Shubert, Bohachevsky N.1, Leon, Bird, De Jong N.5 (2D);
-  Hartmann 3D; Colville, Shekel 5/7/10 (4D); Hartmann 6D
+  Hartmann 3D; Colville, Shekel 5/7/10 (4D); Hartmann 6D.
 
 ```cpp
 #include "test_functions/classic_functions.h"
 
-auto tf = test_functions::rastrigin(5);              // или get_function("rastrigin", 5)
+auto tf = test_functions::rastrigin(5);  // or test_functions::get_function("rastrigin", 5)
 auto res = shgo(tf.function, tf.bounds);
 std::cout << res.fun << " vs " << tf.f_opt << "\n";
 
-for (const auto &f : test_functions::functions_for_dimension(2)) { /* все 2D-функции */ }
+for (const auto &f : test_functions::functions_for_dimension(2)) { /* all 2D functions */ }
 ```
 
-## 📊 Визуализация результатов
+## Tests
 
-Библиотека включает скрипты Python для визуализации процесса оптимизации:
+```bash
+./build/find_global_opt_test
+```
+
+The suite runs both methods on the GKLS, Grishagin, Hill and Shekel families and checks the classic functions.
+
+## Visualization
 
 ```bash
 cd visualization
-python animation.py  # Генерирует анимацию поиска минимума
+pip install -r requirements.txt
+python animation.py           # GIF animation of Differential Evolution
+python window/main.py         # Interactive window (requires the global_opt_py module)
 ```
 
-Поддерживаемые функции для визуализации:
+## License
 
-- Функция Розенброка (Rosenbrock)
-- Другие 2D/3D функции
-
-## 🧪 Запуск тестов
-
-```bash
-cd build
-./find_global_opt_test  # Прямой запуск тестового исполняемого файла
-```
-
-Тесты покрывают все поддерживаемые тестовые функции:
-
-- GKLS test
-- Grishagin test
-- Hill test
-- Shekel test
-
-## 📦 Интеграция в ваш проект
-
-### Через CMake (рекомендуется)
-
-```cmake
-# В вашем CMakeLists.txt
-include(FetchContent)
-FetchContent_Declare(
-        find_global_opt
-        GIT_REPOSITORY https://github.com/Egor1dzeN/global-opt
-        GIT_TAG main  # или конкретная версия
-)
-FetchContent_MakeAvailable(find_global_opt)
-
-# Связываем с вашим проектом
-target_link_libraries(<your name project> PRIVATE find_global_opt)
-target_include_directories(<your name project> PRIVATE ${find_global_opt_SOURCE_DIR}/include)
-```
-
-## 📊 Результаты оптимизации
-
-```cpp
-struct OptimizeResult {
-    double minimum_value;              // Найденное минимальное значение
-    std::vector<double> minimizers;    // Аргумент минимума
-    int num_function_calls;            // Количество вызовов функции
-    bool success;                      // Успешно ли завершена оптимизация
-    std::string message;               // Сообщение о статусе
-}
-```
-
-## 🛠️ Сборка для разработки
-
-```bash
-# Сборка с отладочной информацией
-mkdir build-debug && cd build-debug
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-cmake --build . --parallel
-
-# Сборка с санитайзерами
-cmake -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZERS=ON ..
-```
-
-## 📄 Лицензия
-
-Этот проект распространяется под лицензией MIT. Подробнее см. в файле [LICENSE](LICENSE).
-
-
+MIT. See [LICENSE](LICENSE).

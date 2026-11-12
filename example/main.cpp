@@ -14,11 +14,11 @@
 
 
 #ifdef _MSC_VER
-// Для MSVC
+// MSVC
 #include <typeinfo>
 
 #else
-// Для GCC/Clang
+// GCC/Clang
 #include <cxxabi.h>
 
 #endif

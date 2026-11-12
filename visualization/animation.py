@@ -11,19 +11,19 @@ def create_de_animation(obj_function: Function,
                         gif_filename: str = 'de_evolution.gif',
                         e: float = 1e-7):
     """
-    Создает анимацию процесса дифференциальной эволюции.
-    Поддерживает как 2D, так и 3D функции.
+    Create an animation of the differential evolution process.
+    Supports 1D (2D plot) and 2D (3D plot) functions.
 
     Parameters:
     -----------
     obj_function : Function
-        Оптимизируемая функция
+        Objective function
     generations : int
-        Количество шагов итерации
+        Number of generations
     pop_size : int
-        Размер популяции
+        Population size
     gif_filename : str
-        Имя файла для сохранения GIF
+        Output GIF file name
     """
 
     input_dim = obj_function.get_dim()
@@ -42,12 +42,12 @@ def create_de_animation(obj_function: Function,
     )
     for i, pop in enumerate(best_history):
         if abs(pop - best_val) < e:
-            print(f'Сходится на {i} шаге из {generations}')
+            print(f'Converged at generation {i} of {generations}')
             break
     else:
-        print(f'Алгоритм не сошелся при {generations} шагах')
-    print(f"Найденный минимум: func({best_solution})")
-    print(f"Значение в минимуме: {best_val:.6f}")
+        print(f'Did not converge within {generations} generations')
+    print(f"Minimizer found: {best_solution}")
+    print(f"Minimum value: {best_val:.6f}")
 
     if input_dim == 1:
         return create_2d_animation(obj_function, generations, gif_filename,

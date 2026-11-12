@@ -52,7 +52,7 @@ inline std::vector<double> solveLinearSystem(std::vector<std::vector<double>>& A
         }
 
         if (std::abs(A[max_row][i]) < 1e-10) {
-            throw std::runtime_error("Матрица вырождена - точки лежат на одной сфере меньшей размерности");
+            throw std::runtime_error("Singular matrix: points lie on a lower-dimensional sphere");
         }
 
         std::swap(A[i], A[max_row]);
@@ -90,7 +90,7 @@ inline std::pair<Point, double> circumsphere(const Simplex &simplex) {
         double pi_p0_norm_sq = 0;
         for (size_t j = 0; j < n; ++j) {
             double diff = pi[j] - p0[j];
-            A[i - 1][j] = diff; // Вектор pi - p0
+            A[i - 1][j] = diff; // Vector pi - p0
             pi_p0_norm_sq += diff * diff;
         }
         b[i - 1] = pi_p0_norm_sq / 2.0;

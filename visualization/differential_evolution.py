@@ -18,12 +18,12 @@ def differential_evolution(
         random_seed: int = 42
 ):
     """
-    Дифференциальная эволюция с сохранением истории популяции и fitness.
+    Differential evolution that records population and fitness history.
     
-    Возвращает:
-    - лучший результат
-    - историю популяции на каждой итерации
-    - историю fitness на каждой итерации
+    Returns:
+    - best result
+    - population history for each generation
+    - fitness history for each generation
     """
     np.random.seed(random_seed)
     random.seed(random_seed)
